@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="st.css">
+<link rel="stylesheet" href="zabuto_calendar.min.css">
+<script src="jquery-3.3.1.min.js"></script>
+<script src="zabuto_calendar.min.js"></script>
+<title>
+</title>
+</head>
+
+<body>
+<div id="my-calendar"></div>
+<script>
+	$(document).ready(function () {
+        $("#my-calendar").zabuto_calendar({language: "ru"});
+
+    	ls = JSON.parse(localStorage.getItem("days")) || new Array();
+
+    	setTimeout(()=>{
+
+    		day = $('div.day');
+
+    		document.body.style.fontFamily = "Arial";
+    		document.body.style.fontSize = "18px";
+    		
+    		if(ls.length > 0) {
+    			for(var ii = 0; ii < day.length; ii++) {
+                    if (ls.indexOf(parseInt(day[ii].innerHTML)) != -1) {
+    					day[ii].classList.add('red');
+    				}
+    			}
+    		}
+    		
+    		for(var i = 0; i < day.length; i++) {
+    			day[i].addEventListener("click", (e)=>{
+    				e.target.classList.toggle("red");
+    				if (e.target.classList.contains('red')) {
+    					ls.push(parseInt(e.target.innerHTML));
+    					localStorage.setItem("days", JSON.stringify(ls));
+    				} else {
+    					ls.splice(ls.indexOf(parseInt(e.target.innerHTML)), 1);
+    					localStorage.setItem("days", JSON.stringify(ls));
+
+    				}
+    			});
+    		} 
+    	}, 4000);
+    });
+</script>
+<style type="text/css">
+    .red {
+        color: #E00;
+        font-weight: bold;
+    }
+</style>
+</body>
+</html>
